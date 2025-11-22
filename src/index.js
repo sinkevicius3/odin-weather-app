@@ -1,3 +1,21 @@
 import './style.css';
 
-console.log('Hello, Webpack!');
+const API_KEY = "U3TA63LDZZ7YEQV9L73T32CUH"
+
+async function fetchWeather(location){
+  try{
+    const response = await fetch(
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(location)}?unitGroup=metric&key=${API_KEY}&contentType=json`
+    );
+
+    if (!response.ok){
+      throw new Error("Location not found");
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch(error){
+    console.error("Error fetching weather: ", error);
+  }
+}
