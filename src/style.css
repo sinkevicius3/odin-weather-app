@@ -20,17 +20,10 @@ body {
   align-items: center;
 }
 
-#weather-app-title {
-  font-size: 2rem;
-  font-weight: 700;
-
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-
 form {
   display: flex;
   gap: 2%;
+  margin-top: 2%;
   margin-bottom: 0.5%;
 }
 
@@ -76,6 +69,7 @@ button:active {
   font-size: 2rem;
   font-weight: 700;
   margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 .weather-card {
