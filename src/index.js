@@ -19,3 +19,24 @@ async function fetchWeather(location){
     console.error("Error fetching weather: ", error);
   }
 }
+
+function proccessWeatherData(data){
+  if (!data || !data.currentConditions){
+    return null;
+  }
+
+  return {
+    location: data.resolvedAddress || data.address,
+    tempC: data.currentConditions.temp,
+    conditions: data.currentConditions.conditions,
+    humidity: data.currentConditions.humidity
+  };
+}
+
+async function testWeather(){
+  const rawData = await fetchWeather("London");
+  const processed = proccessWeatherData(rawData);
+  console.log(processed);
+}
+
+testWeather();
