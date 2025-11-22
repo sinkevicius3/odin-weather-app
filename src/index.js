@@ -40,7 +40,7 @@ function processWeatherData(data) {
 
 async function testWeather(){
   const rawData = await fetchWeather("London");
-  const processed = proccessWeatherData(rawData);
+  const processed = processWeatherData(rawData);
   console.log(processed);
 }
 
@@ -52,37 +52,45 @@ const unitToggleBtn = document.getElementById("unit-toggle");
 let useCelsius = true;
 let latestWeather = null;
 
-function displayWeather(weather){
+function displayWeather(weather) {
   if (!weather){
     return;
-  }
-
-  const temperature = (useCelsius ? weather.tempC : weather.tempC * 1.8 + 32);
-
-  const unit = (useCelsius ? "°C" : "°F");
+  } 
 
   weatherContainer.innerHTML = "";
 
-  const card = document.createElement("div");
-  card.className = "weather-card";
+  const todayStr = new Date().toISOString().split("T")[0];
+  const daysToShow = weather.days.slice(0, 8);
 
-  const locationEl = document.createElement("h2");
-  locationEl.textContent = weather.location;
-  card.appendChild(locationEl);
+  daysToShow.forEach(day => {
+    const temperature = (useCelsius ? day.tempC : day.tempC * 1.8 + 32);
+    const unit = useCelsius ? "°C" : "°F";
 
-  const tempEl = document.createElement("p");
-  tempEl.innerHTML = `Temperature: ${temperature.toFixed(1)}${unit}`;
-  card.appendChild(tempEl);
+    const card = document.createElement("div");
+    card.className = "weather-card";
 
-  const conditionsEl = document.createElement("p");
-  conditionsEl.innerHTML = `Conditions: ${weather.conditions}`;
-  card.appendChild(conditionsEl);
+    if (day.date === todayStr) {
+      card.classList.add("today");
+    }
 
-  const humidityEl = document.createElement("p");
-  humidityEl.innerHTML = `Humidity: ${weather.humidity}%`;
-  card.appendChild(humidityEl);
+    const dateEl = document.createElement("h3");
+    dateEl.textContent = day.date;
+    card.appendChild(dateEl);
 
-  weatherContainer.appendChild(card);
+    const tempEl = document.createElement("p");
+    tempEl.innerHTML = `<strong>Temperature:</strong> ${temperature.toFixed(1)}${unit}`;
+    card.appendChild(tempEl);
+
+    const conditionsEl = document.createElement("p");
+    conditionsEl.innerHTML = `<strong>Conditions:</strong> ${day.conditions}`;
+    card.appendChild(conditionsEl);
+
+    const humidityEl = document.createElement("p");
+    humidityEl.innerHTML = `<strong>Humidity:</strong> ${day.humidity}%`;
+    card.appendChild(humidityEl);
+
+    weatherContainer.appendChild(card);
+  });
 }
 
 const form = document.getElementById("search-form");
@@ -98,7 +106,7 @@ form.addEventListener("submit", async (e) => {
   }
 
   const rawData = await fetchWeather(location);
-  latestWeather = proccessWeatherData(rawData);
+  latestWeather = processWeatherData(rawData);
   displayWeather(latestWeather);
 });
 
