@@ -53,17 +53,20 @@ let useCelsius = true;
 let latestWeather = null;
 
 function displayWeather(weather) {
-  if (!weather){
+  if (!weather) {
     return;
-  } 
+  }
+
+  const locationEl = document.getElementById("location-name");
+  locationEl.textContent = weather.location;
 
   weatherContainer.innerHTML = "";
 
   const todayStr = new Date().toISOString().split("T")[0];
   const daysToShow = weather.days.slice(0, 8);
 
-  daysToShow.forEach(day => {
-    const temperature = (useCelsius ? day.tempC : day.tempC * 1.8 + 32);
+  daysToShow.forEach(function(day) {
+    const temperature = useCelsius ? day.tempC : day.tempC * 1.8 + 32;
     const unit = useCelsius ? "°C" : "°F";
 
     const card = document.createElement("div");
@@ -78,20 +81,21 @@ function displayWeather(weather) {
     card.appendChild(dateEl);
 
     const tempEl = document.createElement("p");
-    tempEl.innerHTML = `<strong>Temperature:</strong> ${temperature.toFixed(1)}${unit}`;
+    tempEl.innerHTML = "<strong>Temperature:</strong> " + temperature.toFixed(1) + unit;
     card.appendChild(tempEl);
 
     const conditionsEl = document.createElement("p");
-    conditionsEl.innerHTML = `<strong>Conditions:</strong> ${day.conditions}`;
+    conditionsEl.innerHTML = "<strong>Conditions:</strong> " + day.conditions;
     card.appendChild(conditionsEl);
 
     const humidityEl = document.createElement("p");
-    humidityEl.innerHTML = `<strong>Humidity:</strong> ${day.humidity}%`;
+    humidityEl.innerHTML = "<strong>Humidity:</strong> " + day.humidity + "%";
     card.appendChild(humidityEl);
 
     weatherContainer.appendChild(card);
   });
 }
+
 
 const form = document.getElementById("search-form");
 const locationInput = document.getElementById("location-input");
