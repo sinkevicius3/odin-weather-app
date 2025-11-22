@@ -20,16 +20,21 @@ async function fetchWeather(location){
   }
 }
 
-function proccessWeatherData(data){
-  if (!data || !data.currentConditions){
+function processWeatherData(data) {
+  if (!data || !data.days) {
     return null;
   }
 
+  const days = data.days.map(day => ({
+    date: day.datetime,
+    tempC: day.temp,
+    conditions: day.conditions,
+    humidity: day.humidity
+  }));
+
   return {
     location: data.resolvedAddress || data.address,
-    tempC: data.currentConditions.temp,
-    conditions: data.currentConditions.conditions,
-    humidity: data.currentConditions.humidity
+    days
   };
 }
 
