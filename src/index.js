@@ -44,8 +44,6 @@ async function testWeather(){
   console.log(processed);
 }
 
-testWeather();
-
 const weatherContainer = document.getElementById("weather-container");
 const unitToggleBtn = document.getElementById("unit-toggle");
 
